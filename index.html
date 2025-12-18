@@ -3,10 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Final Request with Summary</title>
+  <title>Final Request with Summary & Countdown</title>
   <style>
-    @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap
-);
+    @import ur[](https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
 
     body {
       background-color: #000;
@@ -29,7 +28,7 @@
       border-radius: 12px;
       box-shadow: 0 0 20px rgb(221, 0, 255);
       width: 90%;
-      max-width: 600px;
+      max-width: 700px;
       animation: fadeIn 1.5s ease;
     }
 
@@ -130,7 +129,6 @@
       box-shadow: none;
     }
 
-    /* Summary toggle button */
     .summary-toggle {
       background: linear-gradient(90deg, #00f2fe, #4facfe);
       border: none;
@@ -153,8 +151,8 @@
     }
 
     .summary-box {
-      width: 80%;
-      max-width: 800px;
+      width: 90%;
+      max-width: 900px;
       padding: 30px;
       margin-top: 30px;
       background: linear-gradient(135deg, #1e1e1e, #292929);
@@ -176,93 +174,51 @@
       animation: waveText 0.6s ease forwards;
     }
 
-    .summary-box .line:nth-child(1) {
-      animation-delay: 0.3s;
+    .summary-box .line:nth-child(1) { animation-delay: 0.3s; }
+    .summary-box .line:nth-child(2) { animation-delay: 0.6s; }
+    .summary-box .line:nth-child(3) { animation-delay: 0.9s; }
+    .summary-box .line:nth-child(4) { animation-delay: 1.2s; }
+    .summary-box .line:nth-child(5) { animation-delay: 1.5s; }
+    .summary-box .line:nth-child(6) { animation-delay: 1.8s; }
+    .summary-box .line:nth-child(7) { animation-delay: 2.1s; }
+
+    .c1 { color: #ff4d4d; }
+    .c2 { color: #00ffff; }
+    .c3 { color: #ffff00; }
+    .c4 { color: #00ff00; }
+    .c5 { color: #ff00ff; }
+    .c6 { color: #ffa500; }
+    .c7 { color: #00bfff; }
+    .c8 { color: #ff1493; }
+
+    .countdown-box {
+      margin-top: 25px;
+      padding: 15px;
+      background: rgba(30, 30, 30, 0.8);
+      border: 2px solid #ff00cc;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px #ff00cc;
     }
 
-    .summary-box .line:nth-child(2) {
-      animation-delay: 0.6s;
-    }
-
-    .summary-box .line:nth-child(3) {
-      animation-delay: 0.9s;
-    }
-
-    .summary-box .line:nth-child(4) {
-      animation-delay: 1.2s;
-    }
-
-    .summary-box .line:nth-child(5) {
-      animation-delay: 1.5s;
-    }
-
-    .summary-box .line:nth-child(6) {
-      animation-delay: 1.8s;
-    }
-
-    .c1 {
-      color: #ff4d4d;
-    }
-
-    .c2 {
-      color: #00ffff;
-    }
-
-    .c3 {
-      color: #ffff00;
-    }
-
-    .c4 {
-      color: #00ff00;
-    }
-
-    .c5 {
-      color: #ff00ff;
-    }
-
-    .c6 {
-      color: #ffa500;
-    }
-
-    .c7 {
-      color: #00bfff;
-    }
-
-    .c8 {
-      color: #ff1493;
+    .countdown-text {
+      font-weight: bold;
+      color: #00ffcc;
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(40px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes doorOpen {
-      0% {
-        transform: scaleX(0);
-        transform-origin: left;
-        opacity: 0;
-      }
-
-      100% {
-        transform: scaleX(1);
-        transform-origin: left;
-        opacity: 1;
-      }
+      0% { transform: scaleX(0); transform-origin: left; opacity: 0; }
+      100% { transform: scaleX(1); transform-origin: left; opacity: 1; }
     }
 
     @keyframes waveText {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -280,6 +236,12 @@
     <div class="line">Mera <span class="highlight">attitude</span> waapas aa jaayega,</div>
     <div class="line">Is baar bas <span class="highlight">complain</span> mat karna...</div>
     <div class="line">Bas iss baar...</div>
+
+    <!-- Live Countdown Section (nicely placed after main text) -->
+    <div class="countdown-box">
+      <div>Uploaded on: <span style="color:#ffff00;">26 July 2025</span></div>
+      <div class="countdown-text" id="countdown">Calculating time passed...</div>
+    </div>
 
     <button class="toggle-btn" onclick="toggleContent()">See More</button>
 
@@ -302,32 +264,31 @@
           <button class="nav-btn" onclick="nextPage()">Next</button>
         </div>
       </div>
+
       <div id="page2" class="page">
-  <div class="line">Yaar, man to nahi tha ki <span class="highlight">na</span> de...</div>
-  <div class="line">But basss ek bar <span class="highlight">na</span> bol do.</div>
-  <div class="line">Bar bar aapko dene me bhi <span class="highlight">dar</span> lagta hai,</div>
-  <div class="line">Aapki <span class="highlight">study</span> pe bhi shayad impact pad raha ho.</div>
-  <div class="line">Mera poore <span class="highlight">life</span>, ye 2 month sab se jada disturb raha hai</div>
-  <div class="line">मैं आपको <span class="highlight">दोष</span> नहीं दे रहे हैं,</div>
-  <div class="line">हम खुद को ही <span class="highlight">दे</span> रहे हैं।</div>write
-  <div class="line">Na <span class="highlight">coding</span> pe dhyaan hai, na hi <span class="highlight">study</span> pe.</div>
-  <div class="line">ham har  <span class="highlight">situation</span> me happy rahana chate hai  <span class="highlight">to please </span> replay kar do </div>
+        <div class="line">Yaar, man to nahi tha ki <span class="highlight">na</span> de...</div>
+        <div class="line">But basss ek bar <span class="highlight">na</span> bol do.</div>
+        <div class="line">Bar bar aapko dene me bhi <span class="highlight">dar</span> lagta hai,</div>
+        <div class="line">Aapki <span class="highlight">study</span> pe bhi shayad impact pad raha ho.</div>
+        <div class="line">Mera poore <span class="highlight">life</span>, ye 2 month sab se jada disturb raha hai</div>
+        <div class="line">मैं आपको <span class="highlight">दोष</span> नहीं दे रहे हैं,</div>
+        <div class="line">हम खुद को ही <span class="highlight">दे</span> रहे हैं।</div>
+        <div class="line">Na <span class="highlight">coding</span> pe dhyaan hai, na hi <span class="highlight">study</span> pe.</div>
+        <div class="line">ham har <span class="highlight">situation</span> me happy rahana chate hai <span class="highlight">to please</span> replay kar do</div>
 
-  <div class="nav-buttons">
-    <button class="nav-btn" onclick="prevPage()">Previous</button>
-    <button class="nav-btn" onclick="nextPage()">Next</button>
-  </div>
-</div>
-
+        <div class="nav-buttons">
+          <button class="nav-btn" onclick="prevPage()">Previous</button>
+          <button class="nav-btn" onclick="nextPage()">Next</button>
+        </div>
       </div>
+
       <div id="page3" class="page">
         <div class="line">Replay में तो '<span class="highlight">ना</span>' ही पूछ रहे हैं इसलिए,</div>
-        <div class="line">ना ही <span class="highlight">CSS</span> add है, ना <span class="highlight">JS</span> add है,
-        </div>
-        <div class="line">ना <span class="highlight">animation</span> add है, ना <span class="highlight">design</span>
-          है।</div>
+        <div class="line">ना ही <span class="highlight">CSS</span> add है, ना <span class="highlight">JS</span> add है,</div>
+        <div class="line">ना <span class="highlight">animation</span> add है, ना <span class="highlight">design</span> है।</div>
         <div class="line highlight">"और इसे एक पेज पर लिखकर पास कर देना, please"</div>
         <div class="line"><span class="highlight">कृपया आज ही जवाब दे देना PLEASE।</span></div>
+
         <div class="nav-buttons">
           <button class="nav-btn" onclick="prevPage()">Previous</button>
           <button class="nav-btn" onclick="nextPage()" disabled>Next</button>
@@ -339,15 +300,17 @@
   <button class="summary-toggle" onclick="toggleSummary()">Summary</button>
 
   <div id="summaryBox" class="summary-box">
-  <div class="line">Last request... I don't want a <span class="highlight c2">"yes"</span>, just say <span class="highlight c3">"no"</span> once.</div>
-  <div class="line">I can’t focus on <span class="highlight c6">coding</span> or <span class="highlight c5">studying</span>. I just need <span class="highlight c2">one reply</span> — even if it’s a <span class="highlight c3">"no"</span>.</div>
-  <div class="line">You <span class="highlight c7">forgave</span> me three times, but this is it.</div>
-  <div class="line">After this, I won’t <span class="highlight c5">disturb</span> you or say anything. <span class="highlight c7">Promise</span>.</div>
-  <div class="line">These past two months have been the most <span class="highlight c6">disturbing</span> of my life.</div>
-  <div class="line">I’m not <span class="highlight c3">blaming</span> you — it’s <span class="highlight c4">my fault</span>.</div>
-  <div class="line">Just write <span class="highlight c3">“no”</span> in the reply — that’s all I ask.</div>
-</div>
+    <div class="line">Last request... I don't want a <span class="highlight c2">"yes"</span>, just say <span class="highlight c3">"no"</span> once.</div>
+    <div class="line">I can’t focus on <span class="highlight c6">coding</span> or <span class="highlight c5">studying</span>. I just need <span class="highlight c2">one reply</span> — even if it’s a <span class="highlight c3">"no"</span>.</div>
+    <div class="line">You <span class="highlight c7">forgave</span> me three times, but this is it.</div>
+    <div class="line">After this, I won’t <span class="highlight c5">disturb</span> you or say anything. <span class="highlight c7">Promise</span>.</div>
+    <div class="line">These past two months have been the most <span class="highlight c6">disturbing</span> of my life.</div>
+    <div class="line">I’m not <span class="highlight c3">blaming</span> you — it’s <span class="highlight c4">my fault</span>.</div>
+    <div class="line">Just write <span class="highlight c3">“no”</span> in the reply — that’s all I ask.</div>
+  </div>
+
   <script>
+    // Toggle extra content
     function toggleContent() {
       const content = document.getElementById('extra-content');
       const button = document.querySelector('.toggle-btn');
@@ -360,6 +323,7 @@
       }
     }
 
+    // Pagination
     let currentPage = 1;
     const totalPages = 3;
 
@@ -387,6 +351,7 @@
       }
     }
 
+    // Summary toggle
     function toggleSummary() {
       const box = document.getElementById("summaryBox");
       const lines = box.querySelectorAll(".line");
@@ -398,7 +363,37 @@
       }
     }
 
-    // Initialize first page
+    // Live Countdown from 26 July 2025
+    const uploadDate = new Date('2025-07-26T00:00:00');
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = now - uploadDate;
+
+      if (diff < 0) {
+        document.getElementById('countdown').innerHTML = "Not yet uploaded";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const totalMonths = Math.floor(days / 30); // approximate
+      const remainingDays = days % 30;
+
+      document.getElementById('countdown').innerHTML = `
+        ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds passed<br>
+        (≈ ${totalMonths} months and ${remainingDays} days)
+      `;
+    }
+
+    // Update every 1 second (faster than 7 sec for smooth live feel)
+    setInterval(updateCountdown, 1000);
+    updateCountdown(); // initial call
+
+    // Initialize pagination
     showPage(currentPage);
   </script>
 </body>

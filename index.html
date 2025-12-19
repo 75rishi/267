@@ -18,7 +18,6 @@
       padding: 20px;
       box-sizing: border-box;
     }
-
     /* Lock Screen Styles */
     #lockScreen {
       position: fixed;
@@ -77,8 +76,7 @@
       10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
       20%, 40%, 60%, 80% { transform: translateX(10px); }
     }
-
-    /* Original Styles (rest unchanged) */
+    /* Original Styles */
     .request-box {
       background: linear-gradient(145deg, #1a1a1a, #2b2b2b);
       border: 2px solid #6aff00;
@@ -93,24 +91,53 @@
       margin-bottom: 10px;
       font-size: 1.1rem;
     }
-    /* ... (all other original styles remain exactly the same) ... */
-    /* (मैंने बाकी सारे styles और classes यहाँ नहीं दोहराए ताकि code छोटा रहे, लेकिन तुम्हारे original code में जो भी styles थे वो सब वैसे के वैसे ही हैं) */
-
+    .highlight {
+      color: #ff00cc;
+      font-weight: bold;
+    }
+    .countdown-box {
+      margin-top: 30px;
+      padding: 15px;
+      background: #111;
+      border: 1px solid #6aff00;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .toggle-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #00ffcc;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .summary-toggle {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #ff00cc;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .summary-box {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: #1a1a1a;
+      border: 2px solid #ffff00;
+      border-radius: 10px;
+      max-width: 700px;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes doorOpen {
-      0% { transform: scaleX(0); transform-origin: left; opacity: 0; }
-      100% { transform: scaleX(1); transform-origin: left; opacity: 1; }
-    }
-    @keyframes waveText {
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-
   <!-- Lock Screen -->
   <div id="lockScreen">
     <h1>🔒 Locked</h1>
@@ -119,7 +146,7 @@
     <div id="errorMsg">Wrong password! Try again.</div>
   </div>
 
-  <!-- Original Content -->
+  <!-- Main Content -->
   <div class="request-box" style="display:none;" id="mainContent">
     <div class="line">Last request hai...</div>
     <div class="line">Main yeh nahi keh raha ki <span class="highlight">"haa"</span> bolo,</div>
@@ -138,19 +165,17 @@
     </div>
     <button class="toggle-btn" onclick="toggleContent()">See More</button>
     <div id="extra-content" style="display: none;">
-      <!-- Pages content same as yours -->
-      <!-- (तुम्हारा सारा extra content, pages, summary वगैरह बिल्कुल वैसा ही है) -->
+      <!-- Yahan tumhara saara extra content, pages, summary wagairah jo pehle tha woh daal dena -->
     </div>
   </div>
 
   <button class="summary-toggle" onclick="toggleSummary()">Summary</button>
   <div id="summaryBox" class="summary-box">
-    <!-- Summary content same -->
+    <!-- Yahan tumhara summary content jo pehle tha woh daal dena -->
   </div>
 
   <script>
-    // Lock Screen Script
-    const correctPassword = "7,28,45,27";
+    // Updated Lock Screen Script - Ab koi bhi password se open ho jaayega
     const lockScreen = document.getElementById('lockScreen');
     const mainContent = document.getElementById('mainContent');
     const passwordInput = document.getElementById('passwordInput');
@@ -158,13 +183,17 @@
     const errorMsg = document.getElementById('errorMsg');
 
     lockBtn.addEventListener('click', () => {
-      if (passwordInput.value === correctPassword) {
+      // Koi bhi input daalne pe (chahe blank bhi) unlock ho jaayega
+      // Ya specifically in numbers mein se koi bhi daalne pe bhi
+      const input = passwordInput.value.trim();
+      if (input === '7' || input === '28' || input === '45' || input === '27' || input === '7,28,45,27' || input !== '') {
         lockScreen.style.opacity = '0';
         setTimeout(() => {
           lockScreen.style.display = 'none';
           mainContent.style.display = 'block';
         }, 600);
       } else {
+        // Sirf tabhi error jab kuch bhi na daala ho (lekin practically hamesha open hi hoga)
         errorMsg.style.opacity = '1';
         lockScreen.classList.add('shake');
         setTimeout(() => {
@@ -175,15 +204,12 @@
       }
     });
 
-    // Enter key support
+    // Enter key se bhi
     passwordInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') lockBtn.click();
     });
 
-    // बाकी सारा original script (toggleContent, pagination, countdown, summary) यहाँ वैसा ही paste कर दो जैसा तुम्हारे पास था
-    // मैं यहाँ सिर्फ lock वाला part जोड़ा है, बाकी सब तुम्हारे code से copy-paste कर लो
-
-    // Example: तुम्हारा countdown script नीचे है (बाकी भी add कर लेना)
+    // Countdown Script (bilkul same)
     const uploadDate = new Date('2025-07-26T00:00:00');
     function updateCountdown() {
       const now = new Date();
@@ -205,6 +231,16 @@
     }
     setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    // Baaki functions (toggleContent, toggleSummary etc.) jo pehle the woh yahan paste kar dena
+    function toggleContent() {
+      const extra = document.getElementById('extra-content');
+      extra.style.display = extra.style.display === 'none' ? 'block' : 'none';
+    }
+    function toggleSummary() {
+      const summary = document.getElementById('summaryBox');
+      summary.style.display = summary.style.display === 'none' ? 'block' : 'none';
+    }
   </script>
 </body>
 </html>

@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <title>Final Request with Summary & Countdown</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+    
+    
     body {
       background-color: #000;
       color: #f2f2f2;
@@ -18,65 +19,94 @@
       padding: 20px;
       box-sizing: border-box;
     }
-    /* Lock Screen Styles */
-    #lockScreen {
+
+    /* ==== LOCK SCREEN WITH STYLISH ANIMATION ==== */
+    .lock-screen {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f0f0f, #1a0033);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 9999;
-      animation: fadeIn 1s ease;
+      z-index: 1000;
+      animation: lockFadeIn 1.8s ease;
     }
-    #lockScreen h1 {
-      font-size: 2.5rem;
+
+    @keyframes lockFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes lockFadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .lock-title {
+      font-size: 2.8rem;
       color: #ff00cc;
-      margin-bottom: 30px;
-      text-shadow: 0 0 15px #ff00cc;
+      margin-bottom: 40px;
+      text-shadow: 0 0 20px #ff00cc, 0 0 40px #ff00cc;
+      animation: glowPulse 2s infinite alternate;
     }
-    #passwordInput {
-      padding: 15px;
-      width: 280px;
-      font-size: 1.4rem;
+
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 15px #ff00cc; }
+      to { text-shadow: 0 0 35px #ff00cc, 0 0 60px #ff00cc; }
+    }
+
+    .password-input {
+      padding: 18px;
+      font-size: 1.8rem;
+      width: 340px;
       text-align: center;
-      background: #111;
-      border: 3px solid #6aff00;
+      border: 4px solid #00ffcc;
+      border-radius: 15px;
+      background: rgba(26, 26, 26, 0.9);
       color: #fff;
-      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+      transition: all 0.4s ease;
+    }
+
+    .password-input:focus {
       outline: none;
+      border-color: #ff00ff;
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.8);
+      transform: scale(1.06);
     }
-    #lockBtn {
-      margin-top: 20px;
-      padding: 12px 30px;
-      font-size: 1.2rem;
-      background: #00ffcc;
-      color: #000;
+
+    .unlock-btn {
+      margin-top: 35px;
+      padding: 16px 45px;
+      font-size: 1.5rem;
+      background: linear-gradient(90deg, #00f2fe, #4facfe);
       border: none;
-      border-radius: 10px;
+      border-radius: 15px;
+      color: #fff;
       cursor: pointer;
-      transition: 0.3s;
+      box-shadow: 0 0 25px #00f2fe;
+      transition: all 0.5s ease;
     }
-    #lockBtn:hover {
-      background: #ffff00;
-      transform: scale(1.1);
+
+    .unlock-btn:hover {
+      background: linear-gradient(90deg, #fc466b, #3f5efb);
+      box-shadow: 0 0 45px #ff00f2, 0 0 55px #3f5efb;
+      transform: scale(1.18) rotate(1deg);
     }
-    #errorMsg {
-      color: #ff4d4d;
-      margin-top: 15px;
-      font-weight: bold;
-      opacity: 0;
+
+    /* ==== MAIN CONTENT (HIDDEN UNTIL UNLOCK) ==== */
+    .main-content {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      animation: fadeIn 1.5s ease;
     }
-    .shake {
-      animation: shake 0.5s ease;
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-      20%, 40%, 60%, 80% { transform: translateX(10px); }
-    }
-    /* Original Styles */
+
     .request-box {
       background: linear-gradient(145deg, #1a1a1a, #2b2b2b);
       border: 2px solid #6aff00;
@@ -87,129 +117,348 @@
       max-width: 700px;
       animation: fadeIn 1.5s ease;
     }
+
     .line {
       margin-bottom: 10px;
       font-size: 1.1rem;
     }
-    .highlight {
-      color: #ff00cc;
-      font-weight: bold;
-    }
-    .countdown-box {
-      margin-top: 30px;
-      padding: 15px;
-      background: #111;
-      border: 1px solid #6aff00;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 1.1rem;
-    }
+
+    .line:nth-child(6n+1) .highlight { color: #f200ff; font-weight: bold; }
+    .line:nth-child(6n+2) .highlight { color: #00ffcc; font-weight: bold; }
+    .line:nth-child(6n+3) .highlight { color: #ff4d4d; font-weight: bold; }
+    .line:nth-child(6n+4) .highlight { color: #33cc33; font-weight: bold; }
+    .line:nth-child(6n+5) .highlight { color: #ffcc00; font-weight: bold; }
+    .line:nth-child(6n+6) .highlight { color: #6666ff; font-weight: bold; }
+
     .toggle-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #00ffcc;
+      background-color: #0aff68;
       color: #000;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .summary-toggle {
-      margin-top: 20px;
+      border: 3px solid red;
       padding: 10px 20px;
-      background: #ff00cc;
-      color: #fff;
-      border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
+      margin-top: 20px;
+      transition: 0.3s;
     }
-    .summary-box {
+
+    .toggle-btn:hover {
+      background-color: #e5ff00;
+      transform: scale(1.05);
+    }
+
+    .page {
       display: none;
       margin-top: 20px;
-      padding: 20px;
-      background: #1a1a1a;
-      border: 2px solid #ffff00;
-      border-radius: 10px;
-      max-width: 700px;
+      animation: fadeIn 1s ease;
     }
+
+    .page.active {
+      display: block;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .nav-btn {
+      background-color: #000;
+      color: #fff;
+      border: 2px solid #90ee90;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.3s;
+      box-shadow: 0 0 10px #c7ea00;
+    }
+
+    .nav-btn:hover {
+      background-color: #f202ff;
+      transform: scale(1.05);
+    }
+
+    .nav-btn:active {
+      background-color: #ff69b4;
+      box-shadow: 0 0 15px #90ee90;
+      transform: scale(0.95);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .summary-toggle {
+      background: linear-gradient(90deg, #00f2fe, #4facfe);
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      font-family: 'Cookie', cursive;
+      padding: 12px 24px;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00f2fe;
+      transition: all 0.3s ease;
+      margin-top: 30px;
+    }
+
+    .summary-toggle:hover {
+      background: linear-gradient(90deg, #fc466b, #3f5efb);
+      box-shadow: 0 0 20px #ff00f2, 0 0 25px #3f5efb;
+      transform: scale(1.05);
+    }
+
+    .summary-box {
+      width: 90%;
+      max-width: 900px;
+      padding: 30px;
+      margin-top: 30px;
+      background: linear-gradient(135deg, #1e1e1e, #292929);
+      border: 3px solid;
+      border-image: linear-gradient(45deg, #ff00cc, #3333ff, #33ff99, #ffff00) 1;
+      border-radius: 15px;
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      font-family: 'Cookie', cursive;
+      box-shadow: 0 0 25px #ff00cc;
+      display: none;
+      animation: doorOpen 1s ease forwards;
+    }
+
+    .summary-box .line {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: waveText 0.6s ease forwards;
+    }
+
+    .summary-box .line:nth-child(1) { animation-delay: 0.3s; }
+    .summary-box .line:nth-child(2) { animation-delay: 0.6s; }
+    .summary-box .line:nth-child(3) { animation-delay: 0.9s; }
+    .summary-box .line:nth-child(4) { animation-delay: 1.2s; }
+    .summary-box .line:nth-child(5) { animation-delay: 1.5s; }
+    .summary-box .line:nth-child(6) { animation-delay: 1.8s; }
+    .summary-box .line:nth-child(7) { animation-delay: 2.1s; }
+
+    .c1 { color: #ff4d4d; }
+    .c2 { color: #00ffff; }
+    .c3 { color: #ffff00; }
+    .c4 { color: #00ff00; }
+    .c5 { color: #ff00ff; }
+    .c6 { color: #ffa500; }
+    .c7 { color: #00bfff; }
+    .c8 { color: #ff1493; }
+
+    .countdown-box {
+      margin-top: 25px;
+      padding: 15px;
+      background: rgba(30, 30, 30, 0.8);
+      border: 2px solid #ff00cc;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px #ff00cc;
+    }
+
+    .countdown-text {
+      font-weight: bold;
+      color: #00ffcc;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes doorOpen {
+      0% { transform: scaleX(0); transform-origin: left; opacity: 0; }
+      100% { transform: scaleX(1); transform-origin: left; opacity: 1; }
+    }
+
+    @keyframes waveText {
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <!-- Lock Screen -->
-  <div id="lockScreen">
-    <h1>🔒 Locked</h1>
-    <input type="text" id="passwordInput" placeholder="Enter password" autocomplete="off" />
-    <button id="lockBtn">Unlock</button>
-    <div id="errorMsg">Wrong password! Try again.</div>
+
+  <!-- LOCK SCREEN -->
+  <div id="lockScreen" class="lock-screen">
+    <div class="lock-title">Enter Password</div>
+    <input type="password" id="passwordInput" class="password-input" placeholder="Password..." autocomplete="off">
+    <button class="unlock-btn" onclick="checkPassword()">Unlock</button>
+    <p style="margin-top: 25px; color: #ff4d4d; font-size: 1.1rem; display: none;" id="errorMsg">Wrong Password! Try again.</p>
   </div>
 
-  <!-- Main Content -->
-  <div class="request-box" style="display:none;" id="mainContent">
-    <div class="line">Last request hai...</div>
-    <div class="line">Main yeh nahi keh raha ki <span class="highlight">"haa"</span> bolo,</div>
-    <div class="line">Bas itna keh raha hoon ki kam se kam <span class="highlight">"na"</span> to bol do.</div>
-    <div class="line highlight">Please... na to bol do yaar.</div>
-    <div class="line">Na hi to bolna...</div>
-    <div class="line">Na hi <span class="highlight">coding</span> ho pa rahi hai,</div>
-    <div class="line">Na hi <span class="highlight">study</span> ho rahi hai.</div>
-    <div class="line">Aap bas ek baar <span class="highlight">na</span> keh do...</div>
-    <div class="line">Mera <span class="highlight">attitude</span> waapas aa jaayega,</div>
-    <div class="line">Is baar bas <span class="highlight">complain</span> mat karna...</div>
-    <div class="line">Bas iss baar...</div>
-    <div class="countdown-box">
-      <div>Uploaded on: <span style="color:#ffff00;">26 July 2025</span></div>
-      <div class="countdown-text" id="countdown">Calculating time passed...</div>
+  <!-- MAIN CONTENT (EXACTLY SAME AS YOUR ORIGINAL - NO TEXT CHANGED) -->
+  <div id="mainContent" class="main-content">
+    <div class="request-box">
+      <div class="line">Last request hai...</div>
+      <div class="line">Main yeh nahi keh raha ki <span class="highlight">"haa"</span> bolo,</div>
+      <div class="line">Bas itna keh raha hoon ki kam se kam <span class="highlight">"na"</span> to bol do.</div>
+      <div class="line highlight">Please... na to bol do yaar.</div>
+      <div class="line">Na hi to bolna...</div>
+      <div class="line">Na hi <span class="highlight">coding</span> ho pa rahi hai,</div>
+      <div class="line">Na hi <span class="highlight">study</span> ho rahi hai.</div>
+      <div class="line">Aap bas ek baar <span class="highlight">na</span> keh do...</div>
+      <div class="line">Mera <span class="highlight">attitude</span> waapas aa jaayega,</div>
+      <div class="line">Is baar bas <span class="highlight">complain</span> mat karna...</div>
+      <div class="line">Bas iss baar...</div>
+      <!-- Live Countdown Section -->
+      <div class="countdown-box">
+        <div>Uploaded on: <span style="color:#ffff00;">26 July 2025</span></div>
+        <div class="countdown-text" id="countdown">Calculating time passed...</div>
+      </div>
+      <button class="toggle-btn" onclick="toggleContent()">See More</button>
+      <div id="extra-content" style="display: none;">
+        <div id="page1" class="page active">
+          <div class="line">Aapne mujhe 3 baar maaf kar diya… par ab bas.</div>
+          <div class="line">Ye last hai.</div>
+          <div class="line">Iske baad main na aapko <span class="highlight">dekhunga</span> tak nahi,</div>
+          <div class="line">Na hi kuch <span class="highlight">bolunga</span>.</div>
+          <div class="line">Ab sirf apni <span class="highlight">study</span> start karni hai.</div>
+          <div class="line">Please ek baar <span class="highlight">reply</span> de do…</div>
+          <div class="line">Bas ek baar — chahe <span class="highlight">'na'</span> hi bol do,</div>
+          <div class="line">Phir kabhi kuch nahi kahunga,</div>
+          <div class="line">इसके बाद हम <span class="highlight">कोडिंग</span> भी छोड़ दे गए।</div>
+          <div class="line">Kabhi <span class="highlight">disturb</span> nahi karunga.</div>
+          <div class="line highlight">Promise.</div>
+          <div class="nav-buttons">
+            <button class="nav-btn" onclick="prevPage()" disabled>Previous</button>
+            <button class="nav-btn" onclick="nextPage()">Next</button>
+          </div>
+        </div>
+        <div id="page2" class="page">
+          <div class="line">Yaar, man to nahi tha ki <span class="highlight">na</span> de...</div>
+          <div class="line">But basss ek bar <span class="highlight">na</span> bol do.</div>
+          <div class="line">Bar bar aapko dene me bhi <span class="highlight">dar</span> lagta hai,</div>
+          <div class="line">Aapki <span class="highlight">study</span> pe bhi shayad impact pad raha ho.</div>
+          <div class="line">Mera poore <span class="highlight">life</span>, ye 2 month sab se jada disturb raha hai</div>
+          <div class="line">मैं आपको <span class="highlight">दोष</span> नहीं दे रहे हैं,</div>
+          <div class="line">हम खुद को ही <span class="highlight">दे</span> रहे हैं।</div>
+          <div class="line">Na <span class="highlight">coding</span> pe dhyaan hai, na hi <span class="highlight">study</span> pe.</div>
+          <div class="line">ham har <span class="highlight">situation</span> me happy rahana chate hai <span class="highlight">to please</span> replay kar do</div>
+          <div class="nav-buttons">
+            <button class="nav-btn" onclick="prevPage()">Previous</button>
+            <button class="nav-btn" onclick="nextPage()">Next</button>
+          </div>
+        </div>
+        <div id="page3" class="page">
+          <div class="line">Replay में तो '<span class="highlight">ना</span>' ही पूछ रहे हैं इसलिए,</div>
+          <div class="line">ना ही <span class="highlight">CSS</span> add है, ना <span class="highlight">JS</span> add है,</div>
+          <div class="line">ना <span class="highlight">animation</span> add है, ना <span class="highlight">design</span> है।</div>
+          <div class="line highlight">"और इसे एक पेज पर लिखकर पास कर देना, please"</div>
+          <div class="line"><span class="highlight">कृपया आज ही जवाब दे देना PLEASE।</span></div>
+          <div class="nav-buttons">
+            <button class="nav-btn" onclick="prevPage()">Previous</button>
+            <button class="nav-btn" onclick="nextPage()" disabled>Next</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <button class="toggle-btn" onclick="toggleContent()">See More</button>
-    <div id="extra-content" style="display: none;">
-      <!-- Yahan tumhara saara extra content, pages, summary wagairah jo pehle tha woh daal dena -->
-    </div>
-  </div>
 
-  <button class="summary-toggle" onclick="toggleSummary()">Summary</button>
-  <div id="summaryBox" class="summary-box">
-    <!-- Yahan tumhara summary content jo pehle tha woh daal dena -->
+    <button class="summary-toggle" onclick="toggleSummary()">Summary</button>
+    <div id="summaryBox" class="summary-box">
+      <div class="line">Last request... I don't want a <span class="highlight c2">"yes"</span>, just say <span class="highlight c3">"no"</span> once.</div>
+      <div class="line">I can’t focus on <span class="highlight c6">coding</span> or <span class="highlight c5">studying</span>. I just need <span class="highlight c2">one reply</span> — even if it’s a <span class="highlight c3">"no"</span>.</div>
+      <div class="line">You <span class="highlight c7">forgave</span> me three times, but this is it.</div>
+      <div class="line">After this, I won’t <span class="highlight c5">disturb</span> you or say anything. <span class="highlight c7">Promise</span>.</div>
+      <div class="line">These past two months have been the most <span class="highlight c6">disturbing</span> of my life.</div>
+      <div class="line">I’m not <span class="highlight c3">blaming</span> you — it’s <span class="highlight c4">my fault</span>.</div>
+      <div class="line">Just write <span class="highlight c3">“no”</span> in the reply — that’s all I ask.</div>
+    </div>
   </div>
 
   <script>
-    // Updated Lock Screen Script - Ab koi bhi password se open ho jaayega
-    const lockScreen = document.getElementById('lockScreen');
-    const mainContent = document.getElementById('mainContent');
-    const passwordInput = document.getElementById('passwordInput');
-    const lockBtn = document.getElementById('lockBtn');
-    const errorMsg = document.getElementById('errorMsg');
+    // Passwords (any one will work)
+    const validPasswords = ['7', '28', '45', '27'];
 
-    lockBtn.addEventListener('click', () => {
-      // Koi bhi input daalne pe (chahe blank bhi) unlock ho jaayega
-      // Ya specifically in numbers mein se koi bhi daalne pe bhi
-      const input = passwordInput.value.trim();
-      if (input === '7' || input === '28' || input === '45' || input === '27' || input === '7,28,45,27' || input !== '') {
-        lockScreen.style.opacity = '0';
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+
+      if (validPasswords.includes(input)) {
+        // Smooth fade out animation
+        document.getElementById('lockScreen').style.animation = 'lockFadeOut 1.2s ease forwards';
         setTimeout(() => {
-          lockScreen.style.display = 'none';
-          mainContent.style.display = 'block';
-        }, 600);
+          document.getElementById('lockScreen').style.display = 'none';
+          document.getElementById('mainContent').style.display = 'flex';
+        }, 1200);
+
+        // Start countdown only after unlock
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
       } else {
-        // Sirf tabhi error jab kuch bhi na daala ho (lekin practically hamesha open hi hoga)
-        errorMsg.style.opacity = '1';
-        lockScreen.classList.add('shake');
-        setTimeout(() => {
-          lockScreen.classList.remove('shake');
-          errorMsg.style.opacity = '0';
-          passwordInput.value = '';
-        }, 600);
+        errorMsg.style.display = 'block';
+        setTimeout(() => { errorMsg.style.display = 'none'; }, 2500);
+      }
+    }
+
+    // Allow Enter key to unlock
+    document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkPassword();
       }
     });
 
-    // Enter key se bhi
-    passwordInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') lockBtn.click();
-    });
+    // Toggle extra content
+    function toggleContent() {
+      const content = document.getElementById('extra-content');
+      const button = document.querySelector('.toggle-btn');
+      if (content.style.display === 'none') {
+        content.style.display = 'block';
+        button.textContent = 'Hide Content';
+      } else {
+        content.style.display = 'none';
+        button.textContent = 'See More';
+      }
+    }
 
-    // Countdown Script (bilkul same)
+    // Pagination
+    let currentPage = 1;
+    const totalPages = 3;
+    function showPage(pageNum) {
+      for (let i = 1; i <= totalPages; i++) {
+        const page = document.getElementById(`page${i}`);
+        page.classList.remove('active');
+        if (i === pageNum) page.classList.add('active');
+      }
+      document.querySelector('.nav-btn[onclick="prevPage()"]').disabled = pageNum === 1;
+      document.querySelector('.nav-btn[onclick="nextPage()"]').disabled = pageNum === totalPages;
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+      }
+    }
+
+    // Summary toggle
+    function toggleSummary() {
+      const box = document.getElementById("summaryBox");
+      const lines = box.querySelectorAll(".line");
+      if (box.style.display === "none" || box.style.display === "") {
+        box.style.display = "block";
+        lines.forEach(line => line.style.animationPlayState = 'running');
+      } else {
+        box.style.display = "none";
+      }
+    }
+
+    // Live Countdown from 26 July 2025
     const uploadDate = new Date('2025-07-26T00:00:00');
     function updateCountdown() {
       const now = new Date();
@@ -229,18 +478,9 @@
         (≈ ${totalMonths} months and ${remainingDays} days)
       `;
     }
-    setInterval(updateCountdown, 1000);
-    updateCountdown();
 
-    // Baaki functions (toggleContent, toggleSummary etc.) jo pehle the woh yahan paste kar dena
-    function toggleContent() {
-      const extra = document.getElementById('extra-content');
-      extra.style.display = extra.style.display === 'none' ? 'block' : 'none';
-    }
-    function toggleSummary() {
-      const summary = document.getElementById('summaryBox');
-      summary.style.display = summary.style.display === 'none' ? 'block' : 'none';
-    }
+    // Initialize pagination
+    showPage(currentPage);
   </script>
 </body>
 </html>
